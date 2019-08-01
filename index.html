@@ -62,10 +62,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-How-to-Computing-the-PSNR" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-data-set-collection" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/26/How-to-Computing-the-PSNR/" class="article-date">
-  <time datetime="2019-06-26T09:10:38.000Z" itemprop="datePublished">2019-06-26</time>
+    <a href="/2019/08/01/data-set-collection/" class="article-date">
+  <time datetime="2019-08-01T11:14:03.000Z" itemprop="datePublished">2019-08-01</time>
 </a>
     
   </div>
@@ -76,7 +76,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/26/How-to-Computing-the-PSNR/">How to Computing the PSNR</a>
+      <a class="article-title" href="/2019/08/01/data-set-collection/">data_set collection</a>
     </h1>
   
 
@@ -88,7 +88,380 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/26/How-to-Computing-the-PSNR/" data-id="cjxd53jlj0001i8v7o92l1jir" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/01/data-set-collection/" data-id="cjyslagq20002e0v7kgd77at0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-README_AAE" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/21/README_AAE/" class="article-date">
+  <time datetime="2019-07-20T22:49:43.628Z" itemprop="datePublished">2019-07-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Adversarial-Autoencoders-AAE"><a href="#Adversarial-Autoencoders-AAE" class="headerlink" title="Adversarial Autoencoders (AAE)"></a>Adversarial Autoencoders (AAE)</h1><ul>
+<li>Tensorflow implementation of <a href="https://arxiv.org/abs/1511.05644" target="_blank" rel="noopener">Adversarial Autoencoders</a> (ICLR 2016)</li>
+<li>Similar to variational autoencoder (VAE), AAE imposes a prior on the latent variable z. Howerver, instead of maximizing the evidence lower bound (ELBO) like VAE, AAE utilizes a adversarial network structure to guides the model distribution of z to match the prior distribution.</li>
+<li>This repository contains reproduce of several experiments mentioned in the paper.</li>
+</ul>
+<h2 id="Requirements"><a href="#Requirements" class="headerlink" title="Requirements"></a>Requirements</h2><ul>
+<li>Python 3.3+</li>
+<li><a href="https://www.tensorflow.org/" target="_blank" rel="noopener">TensorFlow 1.9+</a></li>
+<li><a href="https://github.com/tensorflow/probability" target="_blank" rel="noopener">TensorFlow Probability</a></li>
+<li><a href="http://www.numpy.org/" target="_blank" rel="noopener">Numpy</a></li>
+<li><a href="https://www.scipy.org/" target="_blank" rel="noopener">Scipy</a></li>
+</ul>
+<h2 id="Implementation-details"><a href="#Implementation-details" class="headerlink" title="Implementation details"></a>Implementation details</h2><ul>
+<li>All the models of AAE are defined in <a href="src/models/aae.py">src/models/aae.py</a>. </li>
+<li>Model corresponds to fig 1 and 3 in the paper can be found here: <a href="https://github.com/conan7882/adversarial-autoencoders-tf/blob/master/src/models/aae.py#L110" target="_blank" rel="noopener">train</a> and <a href="https://github.com/conan7882/adversarial-autoencoders-tf/blob/master/src/models/aae.py#L164" target="_blank" rel="noopener">test</a>.</li>
+<li>Model corresponds to fig 6 in the paper can be found here: <a href="https://github.com/conan7882/adversarial-autoencoders-tf/blob/master/src/models/aae.py#L110" target="_blank" rel="noopener">train</a> and <a href="https://github.com/conan7882/adversarial-autoencoders-tf/blob/master/src/models/aae.py#L148" target="_blank" rel="noopener">test</a>.</li>
+<li>Model corresponds to fig 8 in the paper can be found here: <a href="https://github.com/conan7882/adversarial-autoencoders-tf/blob/master/src/models/aae.py#L71" target="_blank" rel="noopener">train</a> and <a href="https://github.com/conan7882/adversarial-autoencoders-tf/blob/master/src/models/aae.py#L182" target="_blank" rel="noopener">test</a>.</li>
+<li>Examples of how to use AAE models can be found in <a href="experiment/aae_mnist.py">experiment/aae_mnist.py</a>.</li>
+<li>Encoder, decoder and all discriminators contain two fully connected layers with 1000 hidden units and RelU activation function. Decoder and all discriminators contain an additional fully connected layer for output.</li>
+<li>Images are normalized to [-1, 1] before fed into the encoder and tanh is used as the output nonlinear of decoder.</li>
+<li>All the sub-networks are optimized by Adam optimizer with <code>beta1 = 0.5</code>.</li>
+</ul>
+<h2 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h2><ul>
+<li>Download the MNIST dataset from <a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">here</a>.</li>
+<li>Setup path in <a href="experiment/aae_mnist.pyy"><code>experiment/aae_mnist.py</code></a>:<br><code>DATA_PATH</code> is the path to put MNIST dataset.<br><code>SAVE_PATH</code> is the path to save output images and trained model.</li>
+</ul>
+<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><p>The script <a href="experiment/aae_mnist.py">experiment/aae_mnist.py</a> contains all the experiments shown here. Detailed usage for each experiment will be describe later along with the results.</p>
+<h3 id="Argument"><a href="#Argument" class="headerlink" title="Argument"></a>Argument</h3><ul>
+<li><code>--train</code>: Train the model of Fig 1 and 3 in the paper.</li>
+<li><code>--train_supervised</code>: Train the model of Fig 6 in the paper.</li>
+<li><code>--train_semisupervised</code>: Train the model of Fig 8 in the paper.</li>
+<li><code>--label</code>: Incorporate label information in the adversarial regularization (Fig 3 in the paper).</li>
+<li><code>--generate</code>: Randomly sample images from trained model.</li>
+<li><code>--viz</code>: Visualize latent space and data manifold (only when <code>--ncode</code> is 2).</li>
+<li><code>--supervise</code>: Sampling from supervised model (Fig 6 in the paper) when <code>--generate</code> is True.</li>
+<li><code>--load</code>: The epoch ID of pre-trained model to be restored.</li>
+<li><code>--ncode</code>: Dimension of code. Default: <code>2</code></li>
+<li><code>--dist_type</code>: Type of the prior distribution used to impose on the hidden codes. Default: <code>gaussian</code>. <code>gmm</code> for Gaussian mixture distribution.  </li>
+<li><code>--noise</code>: Add noise to encoder input (Gaussian with std=0.6).</li>
+<li><code>--lr</code>: Initial learning rate. Default: <code>2e-4</code>.</li>
+<li><code>--dropout</code>: Keep probability for dropout. Default: <code>1.0</code>.</li>
+<li><code>--bsize</code>: Batch size. Default: <code>128</code>.</li>
+<li><code>--maxepoch</code>: Max number of epochs. Default: <code>100</code>.</li>
+<li><code>--encw</code>: Weight of autoencoder loss. Default: <code>1.0</code>.</li>
+<li><code>--genw</code>: Weight of z generator loss. Default: <code>6.0</code>.</li>
+<li><code>--disw</code>: Weight of z discriminator loss. Default: <code>6.0</code>.</li>
+<li><code>--clsw</code>: Weight of semi-supervised loss. Default: <code>1.0</code>.</li>
+<li><code>--ygenw</code>: Weight of y generator loss. Default: <code>6.0</code>.</li>
+<li><code>--ydisw</code>: Weight of y discriminator loss. Default: <code>6.0</code>.</li>
+</ul>
+<h2 id="1-Adversarial-Autoencoder"><a href="#1-Adversarial-Autoencoder" class="headerlink" title="1. Adversarial Autoencoder"></a>1. Adversarial Autoencoder</h2><h3 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h3><table>
+<thead>
+<tr>
+<th style="text-align:center"><em>Architecture</em></th>
+<th style="text-align:left"><em>Description</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="figs/s_1.png" width="1500px"></td>
+<td style="text-align:left">The top row is an autoencoder. z is sampled through the re-parameterization trick discussed in <a href="https://arxiv.org/abs/1312.6114" target="_blank" rel="noopener">variational autoencoder paper</a>. The bottom row is a discriminator to separate samples generate from the encoder and samples from the prior distribution p(z).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Hyperparameters"><a href="#Hyperparameters" class="headerlink" title="Hyperparameters"></a>Hyperparameters</h3><table>
+<thead>
+<tr>
+<th style="text-align:left"><em>name</em></th>
+<th style="text-align:left"><em>value</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Reconstruction Loss Weight</td>
+<td style="text-align:left">1.0</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">Latent z G/D Loss Weight</td>
+<td style="text-align:left">6.0 / 6.0</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">Batch Size</td>
+<td style="text-align:left">128</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">Max Epoch</td>
+<td style="text-align:left">400</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">Learning Rate</td>
+<td style="text-align:left">2e-4 (initial) / 2e-5 (100 epochs) / 2e-6 (300 epochs)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Usage-1"><a href="#Usage-1" class="headerlink" title="Usage"></a>Usage</h3><ul>
+<li><p>Training. Summary, randomly sampled images and latent space during training will be saved in <code>SAVE_PATH</code>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python aae_mnist.py --train \</span><br><span class="line">  --ncode CODE_DIM \</span><br><span class="line">  --dist_type TYPE_OF_PRIOR (`gaussian` or `gmm`)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>Random sample data from trained model. Image will be saved in <code>SAVE_PATH</code> with name <code>generate_im.png</code>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">python aae_mnist.py --generate \</span><br><span class="line">  --ncode CODE_DIM \</span><br><span class="line">  --dist_type TYPE_OF_PRIOR (`gaussian` or `gmm`)\</span><br><span class="line">  --load RESTORE_MODEL_ID</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Visualize latent space and data manifold (only when code dim = 2). Image will be saved in <code>SAVE_PATH</code> with name <code>generate_im.png</code> and <code>latent.png</code>. For Gaussian distribution, there will be one image for data manifold. For mixture of 10 2D Gaussian, there will be 10 images of data manifold for each component of the distribution.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">python aae_mnist.py --viz \</span><br><span class="line">  --ncode CODE_DIM \</span><br><span class="line">  --dist_type TYPE_OF_PRIOR (`gaussian` or `gmm`)\</span><br><span class="line">  --load RESTORE_MODEL_ID</span><br></pre></td></tr></table></figure>
+<!---
+*name* | *command* 
+:--- | :---
+Training |``python aae_mnist.py --train --dist_type <TYPE_OF_PRIOR>``|
+Random sample data |``python aae_mnist.py --generate --dist_type <TYPE_OF_PRIOR> --load <RESTORE_MODEL_ID>``|
+Visualize latent space and data manifold (only when code dim = 2) |``python aae_mnist.py --viz --dist_type <TYPE_OF_PRIOR> --load <RESTORE_MODEL_ID>``|
+Option | ``--bsize``
+--->
+</li>
+</ul>
+<h3 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h3><ul>
+<li>For 2D Gaussian, we can see sharp transitions (no gaps) as mentioned in the paper. Also, from the learned manifold, we can see almost all the sampled images are readable.</li>
+<li>For mixture of 10 Gaussian, I just uniformly sample images in a 2D square space as I did for 2D Gaussian instead of sampling along the axes of the corresponding mixture component, which will be shown in the next section. We can see in the gap area between two component, it is less likely to generate good samples.  </li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><em>Prior Distribution</em></th>
+<th style="text-align:center"><em>Learned Coding Space</em></th>
+<th style="text-align:center"><em>Learned Manifold</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="figs/gaussian.png" height="230px"></td>
+<td style="text-align:center"><img src="figs/gaussian_latent.png" height="230px"></td>
+<td style="text-align:center"><img src="figs/gaussian_manifold.png" height="230px"></td>
+</tr>
+<tr>
+<td style="text-align:center"><img src="figs/gmm.png" height="230px"></td>
+<td style="text-align:center"><img src="figs/gmm_latent.png" height="230px"></td>
+<td style="text-align:center"><img src="figs/gmm_manifold.png" height="230px"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-Incorporating-label-in-the-Adversarial-Regularization"><a href="#2-Incorporating-label-in-the-Adversarial-Regularization" class="headerlink" title="2. Incorporating label in the Adversarial Regularization"></a>2. Incorporating label in the Adversarial Regularization</h2><h3 id="Architecture-1"><a href="#Architecture-1" class="headerlink" title="Architecture"></a>Architecture</h3><table>
+<thead>
+<tr>
+<th style="text-align:center"><em>Architecture</em></th>
+<th style="text-align:left"><em>Description</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="figs/s_2.png" width="1500px"></td>
+<td style="text-align:left">The only difference from previous model is that the one-hot label is used as input of encoder and there is one extra class for unlabeled data. For mixture of Gaussian prior, real samples are drawn from each components for each labeled class and for unlabeled data, real samples are drawn from the mixture distribution.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Hyperparameters-1"><a href="#Hyperparameters-1" class="headerlink" title="Hyperparameters"></a>Hyperparameters</h3><p>Hyperparameters are the same as previous section.</p>
+<h3 id="Usage-2"><a href="#Usage-2" class="headerlink" title="Usage"></a>Usage</h3><ul>
+<li><p>Training. Summary, randomly sampled images and latent space will be saved in <code>SAVE_PATH</code>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python aae_mnist.py --train --label\</span><br><span class="line">  --ncode CODE_DIM \</span><br><span class="line">  --dist_type TYPE_OF_PRIOR (`gaussian` or `gmm`)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>Random sample data from trained model. Image will be saved in <code>SAVE_PATH</code> with name <code>generate_im.png</code>.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python aae_mnist.py --generate --ncode &lt;CODE_DIM&gt; --label --dist_type &lt;TYPE_OF_PRIOR&gt; --load &lt;RESTORE_MODEL_ID&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>Visualize latent space and data manifold (only when code dim = 2). Image will be saved in <code>SAVE_PATH</code> with name <code>generate_im.png</code> and <code>latent.png</code>. For Gaussian distribution, there will be one image for data manifold. For mixture of 10 2D Gaussian, there will be 10 images of data manifold for each component of the distribution.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">python aae_mnist.py --viz --label \</span><br><span class="line">  --ncode CODE_DIM \</span><br><span class="line">  --dist_type TYPE_OF_PRIOR (`gaussian` or `gmm`) \</span><br><span class="line">  --load RESTORE_MODEL_ID</span><br></pre></td></tr></table></figure>
+<h3 id="Result-1"><a href="#Result-1" class="headerlink" title="Result"></a>Result</h3><ul>
+<li>Compare with the result in the previous section, incorporating labeling information provides better fitted distribution for codes.</li>
+<li>The learned manifold images demonstrate that each Gaussian component corresponds to the one class of digit. However, the style representation is not consistently represented within each mixture component as shown in the paper. For example, the right most column of the first row experiment, the lower right of digit 1 tilt to left while the lower right of digit 9 tilt to right.</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"><em>Number of Label Used</em></th>
+<th style="text-align:center"><em>Learned Coding Space</em></th>
+<th style="text-align:center"><em>Learned Manifold</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Use full label</strong></td>
+<td style="text-align:center"><img src="figs/gmm_full_label.png" width="350px"></td>
+<td style="text-align:center"><img src="figs/gmm_full_label_2.png" height="150px"> <img src="figs/gmm_full_label_1.png" height="150px"><img src="figs/gmm_full_label_0.png" height="150px"> <img src="figs/gmm_full_label_9.png" height="150px"></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>10k labeled data and 40k unlabeled data</strong></td>
+<td style="text-align:center"><img src="figs/gmm_10k_label.png" width="350px"></td>
+<td style="text-align:center"><img src="figs/gmm_10k_label_2.png" height="150px"> <img src="figs/gmm_10k_label_1.png" height="150px"><img src="figs/gmm_10k_label_0.png" height="150px"> <img src="figs/gmm_10k_label_9.png" height="150px"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-Supervised-Adversarial-Autoencoders"><a href="#3-Supervised-Adversarial-Autoencoders" class="headerlink" title="3. Supervised Adversarial Autoencoders"></a>3. Supervised Adversarial Autoencoders</h3><h3 id="Architecture-2"><a href="#Architecture-2" class="headerlink" title="Architecture"></a>Architecture</h3><table>
+<thead>
+<tr>
+<th style="text-align:center"><em>Architecture</em></th>
+<th style="text-align:left"><em>Description</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="figs/s_3.png" width="800px"></td>
+<td style="text-align:left">The decoder takes code as well as a one-hot vector encoding the label as input. Then it forces the network learn the code independent of the label.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Hyperparameters-2"><a href="#Hyperparameters-2" class="headerlink" title="Hyperparameters"></a>Hyperparameters</h3><h3 id="Usage-3"><a href="#Usage-3" class="headerlink" title="Usage"></a>Usage</h3><ul>
+<li><p>Training. Summary and randomly sampled images will be saved in <code>SAVE_PATH</code>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python aae_mnist.py --train_supervised \</span><br><span class="line">  --ncode CODE_DIM</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>Random sample data from trained model. Image will be saved in <code>SAVE_PATH</code> with name <code>sample_style.png</code>.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python aae_mnist.py  --generate --supervise\</span><br><span class="line">  --ncode CODE_DIM \</span><br><span class="line">  --load RESTORE_MODEL_ID</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Result-2"><a href="#Result-2" class="headerlink" title="Result"></a>Result</h3><ul>
+<li>The result images are generated by using the same code for each column and the same digit label for each row.</li>
+<li>When code dimension is 2, we can see each column consists the same style clearly. But for dimension 10, we can hardly read some digits. Maybe there are some issues of implementation or the hyper-parameters are not properly picked, which makes the code still depend on the label. </li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><em>Code Dim=2</em></th>
+<th style="text-align:center"><em>Code Dim=10</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="figs/supervise_code2.png" height="230px"></td>
+<td style="text-align:center"><img src="figs/supervise_code10.png" height="230px"></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-Semi-supervised-learning"><a href="#4-Semi-supervised-learning" class="headerlink" title="4. Semi-supervised learning"></a>4. Semi-supervised learning</h3><h3 id="Architecture-3"><a href="#Architecture-3" class="headerlink" title="Architecture"></a>Architecture</h3><table>
+<thead>
+<tr>
+<th style="text-align:center"><em>Architecture</em></th>
+<th style="text-align:left"><em>Description</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="figs/s_4.png" width="1500px"></td>
+<td style="text-align:left">The encoder outputs code z as well as the estimated label y. Encoder again takes code z and one-hot label y as input. A Gaussian distribution is imposed on code z and a Categorical distribution is imposed on label y. In this implementation, the autoencoder is trained by semi-supervised classification phase every ten training steps when using 1000 label images and the one-hot label y is approximated by output of softmax.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Hyperparameters-3"><a href="#Hyperparameters-3" class="headerlink" title="Hyperparameters"></a>Hyperparameters</h3><table>
+<thead>
+<tr>
+<th style="text-align:left"><em>name</em></th>
+<th style="text-align:left"><em>value</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Dimention of z</td>
+<td style="text-align:left">10</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">Reconstruction Loss Weight</td>
+<td style="text-align:left">1.0</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">Letant z G/D Loss Weight</td>
+<td style="text-align:left">6.0 / 6.0</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">Letant y G/D Loss Weight</td>
+<td style="text-align:left">6.0 / 6.0</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">Batch Size</td>
+<td style="text-align:left">128</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">Max Epoch</td>
+<td style="text-align:left">250</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">Learning Rate</td>
+<td style="text-align:left">1e-4 (initial) / 1e-5 (150 epochs) / 1e-6 (200 epochs)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Usage-4"><a href="#Usage-4" class="headerlink" title="Usage"></a>Usage</h3><ul>
+<li><p>Training. Summary will be saved in <code>SAVE_PATH</code>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python aae_mnist.py \</span><br><span class="line">  --ncode 10 \</span><br><span class="line">  --train_semisupervised \</span><br><span class="line">  --lr 2e-4 \</span><br><span class="line">  --maxepoch 250</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Result-3"><a href="#Result-3" class="headerlink" title="Result"></a>Result</h3><ul>
+<li>1280 labels are used (128 labeled images per class)</li>
+</ul>
+<p>learning curve for training set (computed only on the training set with labels)<br><img src="figs/semi_train.png" alt="train"></p>
+<p>learning curve for testing set</p>
+<ul>
+<li>The accuracy on testing set is 97.10% around 200 epochs.<br><img src="figs/semi_valid.png" alt="valid"></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/21/README_AAE/" data-id="cjyslagql0004e0v776bwf61j" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Flask-study" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/10/Flask-study/" class="article-date">
+  <time datetime="2019-07-10T15:37:15.000Z" itemprop="datePublished">2019-07-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/10/Flask-study/">Flask_study</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/10/Flask-study/" data-id="cjyslagpt0000e0v7td6uepmp" class="article-share-link">Share</a>
       
       
     </footer>
@@ -120,13 +493,22 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>#一、BN提出的背景意义<br>本文主体背景是：《Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift》，Batch Normalization 算法目前已经被大量 的应用，最新的文献算法很多都会引用这个算法，进行网络训练，可见其强大之处。</p>
+        <p>#一、BN提出的背景意义<br>Batch Normalization是由google提出的一种训练优化方法，参考论文是：《Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift》，Batch Normalization 算法目前已经被大量 的应用，最新的文献算法很多都会引用这个算法，进行网络训练，可见其强大之处。</p>
 <p>随机梯度下降法是训练深度网络的首选。尽管随机梯度下降法对于训练深度网络简单高效，但是需要我们人为的去选择参数，比如学习速率、初始化参数、权重衰减系数、Dropout比例，等等。这些参数的选择对训练结果至关重要，以至于我们很多时间都浪费在这些的调参上。BN算法（Batch Normalization）其好处如下：</p>
 <p>##1.可以选择比较大的初始学习率，极大的提高训练速度。<br>Batch Gradient Descent使用多个梯度的均值来更新权重，用相对少的训练次数遍历完整个训练集，也正是因为平均了多个样本的梯度，许多样本对神经网络的贡献就被其他样本平均掉了，相当于在每个epoch中，训练集的样本数被缩小了。batch中每个样本的差异性越大，这种弊端就越严重。BN首先是把所有的samples的统计分布标准化，降低了batch内不同样本的差异性，然后又允许batch内的各个samples有各自的统计分布。所以，BN的优点自然也就是允许网络使用较大的学习速率进行训练，加快网络的训练速度（减少epoch次数），提升效果。</p>
 <p>##2.省去参数选择的问题。<br>省去过拟合中drop out、L2正则项参数的选择问题，采用BN算法后，可以移除这两项了参数，或者可以选择更小的L2正则约束参数了，因为BN具有提高网络泛化能力的特性；</p>
+<p>##什么是BN</p>
+<p>Normalization是数据标准化（归一化，规范化），Batch 可以理解为批量，加起来就是批量标准化。<br>先说Batch是怎么确定的。在CNN中，Batch就是训练网络所设定的图片数量batch_size。</p>
+<p>Normalization过程，中文解释见三中的图片。</p>
+<p>输入：输入数据x1…xm（这些数据是准备进入激活函数的数据）<br>计算过程中可以看到,<br>1.求数据均值；<br>2.求数据方差；<br>3.数据进行标准化（个人认为称作正态化也可以）<br>4.训练参数γ，β<br>5.输出y通过γ与β的线性变换得到新的值<br>在正向传播的时候，通过可学习的γ与β参数求出新的分布值</p>
+<p>在反向传播的时候，通过链式求导方式，求出γ与β以及相关权值</p>
 <p>##为什么需要归一化</p>
-<p>神经网络学习过程本质上就是为了学习数据分布，一旦训练数据与测试数据的分布不同，那么网络的泛化能力也大大降低。</p>
+<p>神经网络学习过程本质上就是为了学习数据分布，一旦训练数据与测试数据的分布不同，那么网络的泛化能力也大大降低,解决的问题是梯度消失与梯度爆炸。</p>
 <p>输入层的数据，已经认为的归一化，后面网络每一层的输入数据分布是一直在发生变化的，前面层训练参数的更新将导致后面层输入数据分布的变化，因此必然会引起后面每一层输入数据分布的改变。而且，网络的前面几层发生微小的改变，那么后面几层就会被累积放大下去。我们把网络中间层在训练过程中，数据分布的改变称之为：”Internal Covariate Shift”。BN的提出，就是要解决在训练过程中，中间层数据分布发生改变的情况。</p>
+<p><img src="/images/BN_fomula4.png" alt></p>
+<p><img src="/images/BN_image6.png" alt><br><img src="/images/BN_image7.png" alt><br>如果输入很大，其对应的斜率就很小，我们知道，其斜率（梯度）在反向传播中是权值学习速率。所以就会出现如下的问题，<br><img src="/images/BN_image8.png" alt></p>
+<p>在深度网络中，如果网络的激活输出很大，其梯度就很小，学习速率就很慢。假设每层学习梯度都小于最大值0.25，网络有n层，因为链式求导的原因，第一层的梯度小于0.25的n次方，所以学习速率就慢，对于最后一层只需对自身求导1次，梯度就大，学习速率就快。<br>这会造成的影响是在一个很大的深度网络中，浅层基本不学习，权值变化小，后面几层一直在学习，结果就是，后面几层基本可以表示整个网络，失去了深度的意义。</p>
+<p>关于梯度爆炸，根据链式求导法，<br>第一层偏移量的梯度=激活层斜率1x权值1x激活层斜率2x…激活层斜率(n-1)x权值(n-1)x激活层斜率n<br>假如激活层斜率均为最大值0.25，所有层的权值为100，这样梯度就会指数增加。</p>
 <p>#二。BN算法原理</p>
 <p>##1、BN层及使用位置<br>就像激活函数层、卷积层、全连接层、池化层一样，BN(Batch Normalization)也属于网络的一层。归一化也是网络的一层。</p>
 <p>在网络的每一层输入的时候，又插入了一个归一化层，也就是先做一个归一化处理，然后再进入网络的下一层。如果在每一层输入的时候，再加个预处理操作那该有多好啊，比如网络第三层输入数据X3(X3表示网络第三层的输入数据)把它归一化至：均值0、方差为1，然后再输入第三层计算，这样我们就可以解决前面所提到的”Internal Covariate Shift”的问题了。</p>
@@ -135,11 +517,35 @@
 <p>其实因为偏置参数b经过BN层后其实是没有用的，最后也会被均值归一化，当然BN层后面还有个β参数作为偏置项，所以b这个参数就可以不用了。因此最后把BN层+激活函数层就变成了：</p>
 <p><img src="/images/BN_fomula2.png" alt></p>
 <p>##2、预处理操作选择</p>
+<p>说到神经网络输入数据预处理，最好的算法莫过于白化预处理。白化其实跟PCA算法还是挺相似的。举例来说，假设训练数据是图像，由于图像中相邻像素之间具有很强的相关性，所以用于训练时输入是冗余的。白化的目的就是降低输入的冗余性。</p>
+<p>经过白化预处理后，数据满足条件：</p>
+<p>1.特征之间相关性较低<br>2.所有特征具有相同的方差</p>
+<p>由于计算量非常大，忽略了第1个要求，仅仅使用了下面的公式进行预处理，也就是近似白化预处理：</p>
+<p><img src="/images/BN_fomula3.png" alt></p>
+<p>##3.缩放和移位</p>
+<p>减均值除方差得到的分布是正态分布，我们能否认为正态分布就是最好或最能体现我们训练样本的特征分布呢？</p>
+<p>非也，如果激活函数在方差为1的数据上，没有表现最好的效果，比如Sigmoid激活函数。这个函数在-1~1之间的梯度变化不大。假如某一层学习到特征数据本身就分布在S型激活函数的两侧，把它归一化处理、标准差也限制在了1，把数据变换成分布于s函数的中间部分，就没有达到非线性变换的目的，换言之，减均值除方差操作后可能会削弱网络的性能。</p>
+<p><img src="/images/BN_image1.png" alt></p>
+<p><img src="/images/BN_image2.png" alt></p>
+<p><img src="/images/BN_image3.png" alt></p>
+<p><img src="/images/BN_image4.png" alt></p>
+<p>因此，必须进行一些转换才能将分布从0移开。使用缩放因子γ和移位因子β来执行此操作。</p>
+<p>随着训练的进行，这些γ和β也通过反向传播学习以提高准确性。这就要求为每一层学习2个额外的参数来提高训练速度。</p>
+<p>这个最终转换因此完成了批归一算法的定义。缩放和移位是算法比较关键，因为它提供了更多的灵活性。假设如果我们决定不使用BatchNorm，我们可以设置γ=σ和β= mean，从而返回原始值。</p>
+<p>#三、BN算法过程</p>
+<p><img src="/images/BN_image5.png" alt></p>
+<p>采用Normalization方法网络的训练速度快到惊人啊，感觉训练速度是以前的十倍以上。</p>
+<p>BN在深层神经网络的作用非常明显：若神经网络训练时遇到收敛速度较慢，或者“梯度爆炸”等无法训练的情况发生时都可以尝试用BN来解决。同时，常规使用情况下同样可以加入BN来加速模型训练，甚至提升模型精度。</p>
+<p>卷积对BN的使用：<br><img src="/images/BN_image9.png" alt></p>
+<p>这是文章卷积神经网络CNN（1）中5x5的图片通过valid卷积得到的3x3特征图（粉红色）。这里假设通道数为1，batch为1，即大小为[1,1,5,5]。特征图里的值，作为BN的输入，也就是这5x5个数值通过BN计算并保存γ与β，通过γ,β以及输入x计算BN层输出。正向传播过程如上述，对于反向传播就是根据求得的γ与β计算梯度。<br>这里需要着重说明的细节：<br>网络训练中以batch_size为最小单位不断迭代，很显然，新的batch_size进入网络，会产生新的γ与β。在caffe的实现中，通过滑动平滑的方式更新γ与β。</p>
+<p>输入：待进入激活函数的变量<br>输出：<br>1.对于K个激活函数前的输入，所以需要K个循环。每个循环中按照上面所介绍的方法计算γ与β。通过γ,β与输入x的变换求出BN层输出。<br>2.在反向传播时利用γ与β求得梯度从而改变训练权值（变量）。<br>3.通过不断迭代直到训练结束，求得关于不同层以及不同batch的γ与β。<br>4.对于K个激活函数前的输入，每个循环中，计算该层所有batch的γ与β，并对其做无偏估计得到E[x]与Var[x]。<br>5.在预测的正向传播时，使用训练时最后得到的γ与β，以及其无偏估计，通过图中11:所表示的公式计算BN层输出。</p>
+<p><img src="/images/BN_fomula5.png" alt></p>
+<p>#参考文献<br><a href="https://blog.csdn.net/weixin_41481113/article/details/83386646" target="_blank" rel="noopener">https://blog.csdn.net/weixin_41481113/article/details/83386646</a><br><a href="https://blog.csdn.net/Fate_fjh/article/details/53375881" target="_blank" rel="noopener">https://blog.csdn.net/Fate_fjh/article/details/53375881</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/25/批归一化Batch-Normalization的原理及算法/" data-id="cjxd53jlo0003i8v7ab5asrly" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/25/批归一化Batch-Normalization的原理及算法/" data-id="cjyslagqo0005e0v7l8oofqvh" class="article-share-link">Share</a>
       
       
     </footer>
@@ -176,7 +582,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/29/opencv-study/" data-id="cjxd53jld0000i8v79mt27wt4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/29/opencv-study/" data-id="cjyslagq40003e0v7jaa0pnkq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -212,7 +618,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/25/ONNX-Learning/" data-id="cjxd53jlm0002i8v7n0t7zw5o" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/25/ONNX-Learning/" data-id="cjyslagpz0001e0v7eth3pyhi" class="article-share-link">Share</a>
       
       
     </footer>
@@ -240,7 +646,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li></ul>
     </div>
   </div>
 
@@ -253,7 +659,15 @@
       <ul>
         
           <li>
-            <a href="/2019/06/26/How-to-Computing-the-PSNR/">How to Computing the PSNR</a>
+            <a href="/2019/08/01/data-set-collection/">data_set collection</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/21/README_AAE/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/10/Flask-study/">Flask_study</a>
           </li>
         
           <li>
@@ -262,10 +676,6 @@
         
           <li>
             <a href="/2019/05/29/opencv-study/">opencv-study</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/25/ONNX-Learning/">ONNX Learning</a>
           </li>
         
       </ul>

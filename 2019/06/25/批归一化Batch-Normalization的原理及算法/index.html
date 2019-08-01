@@ -7,20 +7,32 @@
   
   <title>批归一化Batch Normalization的原理及算法 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="#一、BN提出的背景意义本文主体背景是：《Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift》，Batch Normalization 算法目前已经被大量 的应用，最新的文献算法很多都会引用这个算法，进行网络训练，可见其强大之处。 随机梯度下降法是训练深度网络的首选">
+  <meta name="description" content="#一、BN提出的背景意义Batch Normalization是由google提出的一种训练优化方法，参考论文是：《Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift》，Batch Normalization 算法目前已经被大量 的应用，最新的文献算法很多都会引用这">
 <meta property="og:type" content="article">
 <meta property="og:title" content="批归一化Batch Normalization的原理及算法">
 <meta property="og:url" content="http://yoursite.com/2019/06/25/批归一化Batch-Normalization的原理及算法/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="#一、BN提出的背景意义本文主体背景是：《Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift》，Batch Normalization 算法目前已经被大量 的应用，最新的文献算法很多都会引用这个算法，进行网络训练，可见其强大之处。 随机梯度下降法是训练深度网络的首选">
+<meta property="og:description" content="#一、BN提出的背景意义Batch Normalization是由google提出的一种训练优化方法，参考论文是：《Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift》，Batch Normalization 算法目前已经被大量 的应用，最新的文献算法很多都会引用这">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/BN_fomula4.png">
+<meta property="og:image" content="http://yoursite.com/images/BN_image6.png">
+<meta property="og:image" content="http://yoursite.com/images/BN_image7.png">
+<meta property="og:image" content="http://yoursite.com/images/BN_image8.png">
 <meta property="og:image" content="http://yoursite.com/images/BN_fomula1.png">
 <meta property="og:image" content="http://yoursite.com/images/BN_fomula2.png">
-<meta property="og:updated_time" content="2019-06-25T16:38:25.724Z">
+<meta property="og:image" content="http://yoursite.com/images/BN_fomula3.png">
+<meta property="og:image" content="http://yoursite.com/images/BN_image1.png">
+<meta property="og:image" content="http://yoursite.com/images/BN_image2.png">
+<meta property="og:image" content="http://yoursite.com/images/BN_image3.png">
+<meta property="og:image" content="http://yoursite.com/images/BN_image4.png">
+<meta property="og:image" content="http://yoursite.com/images/BN_image5.png">
+<meta property="og:image" content="http://yoursite.com/images/BN_image9.png">
+<meta property="og:image" content="http://yoursite.com/images/BN_fomula5.png">
+<meta property="og:updated_time" content="2019-07-10T15:37:57.725Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="批归一化Batch Normalization的原理及算法">
-<meta name="twitter:description" content="#一、BN提出的背景意义本文主体背景是：《Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift》，Batch Normalization 算法目前已经被大量 的应用，最新的文献算法很多都会引用这个算法，进行网络训练，可见其强大之处。 随机梯度下降法是训练深度网络的首选">
-<meta name="twitter:image" content="http://yoursite.com/images/BN_fomula1.png">
+<meta name="twitter:description" content="#一、BN提出的背景意义Batch Normalization是由google提出的一种训练优化方法，参考论文是：《Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift》，Batch Normalization 算法目前已经被大量 的应用，最新的文献算法很多都会引用这">
+<meta name="twitter:image" content="http://yoursite.com/images/BN_fomula4.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -89,13 +101,22 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>#一、BN提出的背景意义<br>本文主体背景是：《Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift》，Batch Normalization 算法目前已经被大量 的应用，最新的文献算法很多都会引用这个算法，进行网络训练，可见其强大之处。</p>
+        <p>#一、BN提出的背景意义<br>Batch Normalization是由google提出的一种训练优化方法，参考论文是：《Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift》，Batch Normalization 算法目前已经被大量 的应用，最新的文献算法很多都会引用这个算法，进行网络训练，可见其强大之处。</p>
 <p>随机梯度下降法是训练深度网络的首选。尽管随机梯度下降法对于训练深度网络简单高效，但是需要我们人为的去选择参数，比如学习速率、初始化参数、权重衰减系数、Dropout比例，等等。这些参数的选择对训练结果至关重要，以至于我们很多时间都浪费在这些的调参上。BN算法（Batch Normalization）其好处如下：</p>
 <p>##1.可以选择比较大的初始学习率，极大的提高训练速度。<br>Batch Gradient Descent使用多个梯度的均值来更新权重，用相对少的训练次数遍历完整个训练集，也正是因为平均了多个样本的梯度，许多样本对神经网络的贡献就被其他样本平均掉了，相当于在每个epoch中，训练集的样本数被缩小了。batch中每个样本的差异性越大，这种弊端就越严重。BN首先是把所有的samples的统计分布标准化，降低了batch内不同样本的差异性，然后又允许batch内的各个samples有各自的统计分布。所以，BN的优点自然也就是允许网络使用较大的学习速率进行训练，加快网络的训练速度（减少epoch次数），提升效果。</p>
 <p>##2.省去参数选择的问题。<br>省去过拟合中drop out、L2正则项参数的选择问题，采用BN算法后，可以移除这两项了参数，或者可以选择更小的L2正则约束参数了，因为BN具有提高网络泛化能力的特性；</p>
+<p>##什么是BN</p>
+<p>Normalization是数据标准化（归一化，规范化），Batch 可以理解为批量，加起来就是批量标准化。<br>先说Batch是怎么确定的。在CNN中，Batch就是训练网络所设定的图片数量batch_size。</p>
+<p>Normalization过程，中文解释见三中的图片。</p>
+<p>输入：输入数据x1…xm（这些数据是准备进入激活函数的数据）<br>计算过程中可以看到,<br>1.求数据均值；<br>2.求数据方差；<br>3.数据进行标准化（个人认为称作正态化也可以）<br>4.训练参数γ，β<br>5.输出y通过γ与β的线性变换得到新的值<br>在正向传播的时候，通过可学习的γ与β参数求出新的分布值</p>
+<p>在反向传播的时候，通过链式求导方式，求出γ与β以及相关权值</p>
 <p>##为什么需要归一化</p>
-<p>神经网络学习过程本质上就是为了学习数据分布，一旦训练数据与测试数据的分布不同，那么网络的泛化能力也大大降低。</p>
+<p>神经网络学习过程本质上就是为了学习数据分布，一旦训练数据与测试数据的分布不同，那么网络的泛化能力也大大降低,解决的问题是梯度消失与梯度爆炸。</p>
 <p>输入层的数据，已经认为的归一化，后面网络每一层的输入数据分布是一直在发生变化的，前面层训练参数的更新将导致后面层输入数据分布的变化，因此必然会引起后面每一层输入数据分布的改变。而且，网络的前面几层发生微小的改变，那么后面几层就会被累积放大下去。我们把网络中间层在训练过程中，数据分布的改变称之为：”Internal Covariate Shift”。BN的提出，就是要解决在训练过程中，中间层数据分布发生改变的情况。</p>
+<p><img src="/images/BN_fomula4.png" alt></p>
+<p><img src="/images/BN_image6.png" alt><br><img src="/images/BN_image7.png" alt><br>如果输入很大，其对应的斜率就很小，我们知道，其斜率（梯度）在反向传播中是权值学习速率。所以就会出现如下的问题，<br><img src="/images/BN_image8.png" alt></p>
+<p>在深度网络中，如果网络的激活输出很大，其梯度就很小，学习速率就很慢。假设每层学习梯度都小于最大值0.25，网络有n层，因为链式求导的原因，第一层的梯度小于0.25的n次方，所以学习速率就慢，对于最后一层只需对自身求导1次，梯度就大，学习速率就快。<br>这会造成的影响是在一个很大的深度网络中，浅层基本不学习，权值变化小，后面几层一直在学习，结果就是，后面几层基本可以表示整个网络，失去了深度的意义。</p>
+<p>关于梯度爆炸，根据链式求导法，<br>第一层偏移量的梯度=激活层斜率1x权值1x激活层斜率2x…激活层斜率(n-1)x权值(n-1)x激活层斜率n<br>假如激活层斜率均为最大值0.25，所有层的权值为100，这样梯度就会指数增加。</p>
 <p>#二。BN算法原理</p>
 <p>##1、BN层及使用位置<br>就像激活函数层、卷积层、全连接层、池化层一样，BN(Batch Normalization)也属于网络的一层。归一化也是网络的一层。</p>
 <p>在网络的每一层输入的时候，又插入了一个归一化层，也就是先做一个归一化处理，然后再进入网络的下一层。如果在每一层输入的时候，再加个预处理操作那该有多好啊，比如网络第三层输入数据X3(X3表示网络第三层的输入数据)把它归一化至：均值0、方差为1，然后再输入第三层计算，这样我们就可以解决前面所提到的”Internal Covariate Shift”的问题了。</p>
@@ -104,11 +125,35 @@
 <p>其实因为偏置参数b经过BN层后其实是没有用的，最后也会被均值归一化，当然BN层后面还有个β参数作为偏置项，所以b这个参数就可以不用了。因此最后把BN层+激活函数层就变成了：</p>
 <p><img src="/images/BN_fomula2.png" alt></p>
 <p>##2、预处理操作选择</p>
+<p>说到神经网络输入数据预处理，最好的算法莫过于白化预处理。白化其实跟PCA算法还是挺相似的。举例来说，假设训练数据是图像，由于图像中相邻像素之间具有很强的相关性，所以用于训练时输入是冗余的。白化的目的就是降低输入的冗余性。</p>
+<p>经过白化预处理后，数据满足条件：</p>
+<p>1.特征之间相关性较低<br>2.所有特征具有相同的方差</p>
+<p>由于计算量非常大，忽略了第1个要求，仅仅使用了下面的公式进行预处理，也就是近似白化预处理：</p>
+<p><img src="/images/BN_fomula3.png" alt></p>
+<p>##3.缩放和移位</p>
+<p>减均值除方差得到的分布是正态分布，我们能否认为正态分布就是最好或最能体现我们训练样本的特征分布呢？</p>
+<p>非也，如果激活函数在方差为1的数据上，没有表现最好的效果，比如Sigmoid激活函数。这个函数在-1~1之间的梯度变化不大。假如某一层学习到特征数据本身就分布在S型激活函数的两侧，把它归一化处理、标准差也限制在了1，把数据变换成分布于s函数的中间部分，就没有达到非线性变换的目的，换言之，减均值除方差操作后可能会削弱网络的性能。</p>
+<p><img src="/images/BN_image1.png" alt></p>
+<p><img src="/images/BN_image2.png" alt></p>
+<p><img src="/images/BN_image3.png" alt></p>
+<p><img src="/images/BN_image4.png" alt></p>
+<p>因此，必须进行一些转换才能将分布从0移开。使用缩放因子γ和移位因子β来执行此操作。</p>
+<p>随着训练的进行，这些γ和β也通过反向传播学习以提高准确性。这就要求为每一层学习2个额外的参数来提高训练速度。</p>
+<p>这个最终转换因此完成了批归一算法的定义。缩放和移位是算法比较关键，因为它提供了更多的灵活性。假设如果我们决定不使用BatchNorm，我们可以设置γ=σ和β= mean，从而返回原始值。</p>
+<p>#三、BN算法过程</p>
+<p><img src="/images/BN_image5.png" alt></p>
+<p>采用Normalization方法网络的训练速度快到惊人啊，感觉训练速度是以前的十倍以上。</p>
+<p>BN在深层神经网络的作用非常明显：若神经网络训练时遇到收敛速度较慢，或者“梯度爆炸”等无法训练的情况发生时都可以尝试用BN来解决。同时，常规使用情况下同样可以加入BN来加速模型训练，甚至提升模型精度。</p>
+<p>卷积对BN的使用：<br><img src="/images/BN_image9.png" alt></p>
+<p>这是文章卷积神经网络CNN（1）中5x5的图片通过valid卷积得到的3x3特征图（粉红色）。这里假设通道数为1，batch为1，即大小为[1,1,5,5]。特征图里的值，作为BN的输入，也就是这5x5个数值通过BN计算并保存γ与β，通过γ,β以及输入x计算BN层输出。正向传播过程如上述，对于反向传播就是根据求得的γ与β计算梯度。<br>这里需要着重说明的细节：<br>网络训练中以batch_size为最小单位不断迭代，很显然，新的batch_size进入网络，会产生新的γ与β。在caffe的实现中，通过滑动平滑的方式更新γ与β。</p>
+<p>输入：待进入激活函数的变量<br>输出：<br>1.对于K个激活函数前的输入，所以需要K个循环。每个循环中按照上面所介绍的方法计算γ与β。通过γ,β与输入x的变换求出BN层输出。<br>2.在反向传播时利用γ与β求得梯度从而改变训练权值（变量）。<br>3.通过不断迭代直到训练结束，求得关于不同层以及不同batch的γ与β。<br>4.对于K个激活函数前的输入，每个循环中，计算该层所有batch的γ与β，并对其做无偏估计得到E[x]与Var[x]。<br>5.在预测的正向传播时，使用训练时最后得到的γ与β，以及其无偏估计，通过图中11:所表示的公式计算BN层输出。</p>
+<p><img src="/images/BN_fomula5.png" alt></p>
+<p>#参考文献<br><a href="https://blog.csdn.net/weixin_41481113/article/details/83386646" target="_blank" rel="noopener">https://blog.csdn.net/weixin_41481113/article/details/83386646</a><br><a href="https://blog.csdn.net/Fate_fjh/article/details/53375881" target="_blank" rel="noopener">https://blog.csdn.net/Fate_fjh/article/details/53375881</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/25/批归一化Batch-Normalization的原理及算法/" data-id="cjxd53jlo0003i8v7ab5asrly" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/25/批归一化Batch-Normalization的原理及算法/" data-id="cjyslagqo0005e0v7l8oofqvh" class="article-share-link">Share</a>
       
       
     </footer>
@@ -117,11 +162,11 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/06/26/How-to-Computing-the-PSNR/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/07/10/Flask-study/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          How to Computing the PSNR
+          Flask_study
         
       </div>
     </a>
@@ -153,7 +198,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li></ul>
     </div>
   </div>
 
@@ -166,7 +211,15 @@
       <ul>
         
           <li>
-            <a href="/2019/06/26/How-to-Computing-the-PSNR/">How to Computing the PSNR</a>
+            <a href="/2019/08/01/data-set-collection/">data_set collection</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/21/README_AAE/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/10/Flask-study/">Flask_study</a>
           </li>
         
           <li>
@@ -175,10 +228,6 @@
         
           <li>
             <a href="/2019/05/29/opencv-study/">opencv-study</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/25/ONNX-Learning/">ONNX Learning</a>
           </li>
         
       </ul>
